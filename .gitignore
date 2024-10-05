@@ -9,8 +9,13 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
-/Library/
-/Temp
+Lil\ Mouse/Library/
+Lil\ Mouse//Temp
+Lil\ Mouse/Obj
+Lil\ Mouse/Build
+Lil\ Mouse/Builds
+Lil\ Mouse/Logs
+Lil\ Mouse/UserSettings
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
