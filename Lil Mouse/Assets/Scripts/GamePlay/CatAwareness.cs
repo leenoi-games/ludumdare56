@@ -8,6 +8,7 @@ public enum AwarenessState
     Seeing,
     HearOrSee,
     Silence,
+    Kill,
     None
 }
 

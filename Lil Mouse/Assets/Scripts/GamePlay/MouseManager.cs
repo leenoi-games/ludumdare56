@@ -8,7 +8,8 @@ public class MouseManager : MonoBehaviour
 {
     private MouseState m_CurrentMouseState;
     private MouseState m_lastMoveState;
-
+    [SerializeField] GameObject m_graveStone;
+    [SerializeField] GameObject m_home;
     [SerializeField] MouseState m_idleState;
     [SerializeField] MouseState m_moveState;
     [SerializeField] MouseState m_cheeseState;
@@ -16,6 +17,7 @@ public class MouseManager : MonoBehaviour
     [SerializeField] Animator m_animator;
 
     [SerializeField] Item m_currentItem;
+    [SerializeField] IntVariable m_lives;
 
     private void Start() {
         m_CurrentMouseState = m_idleState;
@@ -66,6 +68,13 @@ public class MouseManager : MonoBehaviour
         item.gameObject.SetActive(false);
         m_animator.SetBool("cheese",true);
         UpdateMoveState(m_cheeseState);
+    }
+
+    public void OnDie()
+    {
+        Instantiate(m_graveStone, transform.position, Quaternion.identity);
+        transform.position = m_home.transform.position;
+        m_lives.AddValue(-1);
     }
 
     public void DropItem()

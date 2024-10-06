@@ -14,6 +14,7 @@ public class CatMovement : MonoBehaviour
     private NavMeshAgent m_agent;
     private Transform m_lastKnownPosition;
     private bool m_startedStroll = false;
+    private float m_patrolTimer = 0;
 
     private void Start()
     {
@@ -32,15 +33,31 @@ public class CatMovement : MonoBehaviour
             Chase();
         }
         else if(m_catManager.IsStrolling())
-        {
-            
+        {   
             Stroll();
+            if(m_agent.remainingDistance < 1.0f)
+            {
+                Patrol();
+            }
         }
         else
         {
             m_startedStroll = false;
             m_agent.SetDestination(transform.position);
         }
+    }
+    private void Patrol()
+    {
+        if(m_patrolTimer <= 0)
+        {
+            float newTimer = Random.Range(2.0f, 6.0f);
+            float x = Random.Range(-10,10);
+            float y = Random.Range(-10,10);
+
+            Vector3 newDestination = new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z);
+            m_agent.SetDestination(newDestination);
+        }
+        m_patrolTimer -= Time.deltaTime;
     }
 
     private void Chase()
@@ -65,6 +82,7 @@ public class CatMovement : MonoBehaviour
             m_agent.SetDestination(m_lastKnownPosition.position);
             m_agent.speed = m_catManager.GetSpeed();
         }
+
         var vel = m_agent.velocity;
         vel.z = 0;
         if (vel != Vector3.zero) 
@@ -72,4 +90,6 @@ public class CatMovement : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(Vector3.forward,vel);
         }
     }
+
+
 }

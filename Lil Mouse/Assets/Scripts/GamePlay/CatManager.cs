@@ -7,6 +7,9 @@ public class CatManager : MonoBehaviour
     [SerializeField] Animator m_animator;
     [SerializeField] MouseManager m_mouseManager;
 
+    [SerializeField] GameEvent m_killEvent;
+
+
     [Header("CatStates")]
     [SerializeField] CatState m_currentState;
     [SerializeField] CatState m_sleepState;
@@ -28,6 +31,12 @@ public class CatManager : MonoBehaviour
     {
         m_currentState = m_sleepState;
         m_inHearingRange = false;
+    }
+
+    private void ResetCat()
+    {
+        UpdateState(m_sleepState);
+        ResetTimer();
     }
 
     private void Update()
@@ -118,6 +127,12 @@ public class CatManager : MonoBehaviour
             //Debug.Log("Cat sees Mouse");
             m_inSeeingRange = true;
             m_blindTimer = 0.0f;
+        }
+        else if(awarenessState == AwarenessState.Kill && m_currentState == m_chaseState)
+        {
+            m_killEvent.Raise();
+            ResetCat();
+            m_mouseManager.OnDie();
         }
     }
 

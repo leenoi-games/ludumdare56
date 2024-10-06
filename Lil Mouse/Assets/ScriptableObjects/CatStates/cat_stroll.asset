@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: cat_stroll
   m_EditorClassIdentifier: 
   m_speed: 15
-  m_nextStateTimer: 10
+  m_nextStateTimer: 40
   m_previousStateTimer: 0.5
   m_nextState: {fileID: 11400000, guid: 60cd087ea032d4a0b80303bebcaa965c, type: 2}
   m_previousState: {fileID: 11400000, guid: 5918950ec2233448b91e89fec6d32b41, type: 2}
