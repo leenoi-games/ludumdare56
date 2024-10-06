@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Cheese
   m_EditorClassIdentifier: 
   speed: 10
+  isLoud: 1

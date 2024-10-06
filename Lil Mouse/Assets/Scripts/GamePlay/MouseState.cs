@@ -6,4 +6,5 @@ using UnityEngine;
 public class MouseState : ScriptableObject
 {
     public float speed;
+    public bool isLoud;
 }

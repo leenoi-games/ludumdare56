@@ -34,7 +34,6 @@ public class MouseManager : MonoBehaviour
     public void UpdateState(MouseState mouseState)
     {
         m_CurrentMouseState = mouseState;
-        Debug.Log("Update Mouse State to " + mouseState.ToString());
     }
 
     public MouseState GetMouseState()
