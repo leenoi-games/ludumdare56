@@ -25,7 +25,7 @@ public class IntVariable : ScriptableObject
 
     public void AddValue(int i)
     {
-        value += i;
+        SetValue(i + value);
     }
 
     public int GetValue()

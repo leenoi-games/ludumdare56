@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] int m_levelMaxLives = 4;
+    
     [SerializeField] IntVariable m_cheeseCollected;
     [SerializeField] IntVariable m_maxCheese;
     [SerializeField] IntVariable m_lives;
@@ -12,8 +13,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameEvent m_WinEvent;
     [SerializeField] GameEvent m_LoseEvent;
 
+    private int m_deathCounter;
+
     private void Start() 
     {
+        m_deathCounter = 0;
         m_maxLives.SetValue(m_levelMaxLives);
         m_lives.SetValue(m_maxLives.GetValue());
         m_cheeseCollected.SetValue(0);
@@ -22,7 +26,6 @@ public class LevelManager : MonoBehaviour
         if(m_cheeseCollected != null)
         {
             m_cheeseCollected.onValueChanged.AddListener(delegate{UpdateCheese();});
-            Debug.Log("Added Listener");
         }
         if(m_lives != null)
         {
@@ -32,7 +35,7 @@ public class LevelManager : MonoBehaviour
     
     private void UpdateCheese()
     {
-        if(m_cheeseCollected == m_maxCheese)
+        if(m_cheeseCollected.GetValue() == m_lives.GetValue())
         {
             Win();
         }
@@ -44,17 +47,21 @@ public class LevelManager : MonoBehaviour
             return;
         }
         m_maxCheese.SetValue(m_maxLives.GetValue());
+        if(m_cheeseCollected.GetValue() == m_lives.GetValue())
+        {
+            Win();
+        }
     }
 
     public void UpdateLives()
     {
-        Debug.Log("Lives Updated");
+        m_deathCounter++;
         if(m_lives.GetValue() == 0)
         {
             Lose();
             return;
         }
-        m_maxCheese.SetValue(m_maxLives.GetValue());
+        m_maxCheese.SetValue(m_lives.GetValue());
     }
 
     private void Lose()

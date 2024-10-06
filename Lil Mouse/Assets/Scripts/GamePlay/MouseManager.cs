@@ -73,8 +73,18 @@ public class MouseManager : MonoBehaviour
     public void OnDie()
     {
         Instantiate(m_graveStone, transform.position, Quaternion.identity);
+        DropItem();
         transform.position = m_home.transform.position;
         m_lives.AddValue(-1);
+    }
+
+    public bool CarriesCheese()
+    {
+        if(m_currentItem != null)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void DropItem()
