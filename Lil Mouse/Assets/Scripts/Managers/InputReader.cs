@@ -11,9 +11,9 @@ public class InputReader : ScriptableObject, InputActions.IMouseMovementActions
 
     [Header("GameEvents for Player Input")]
     [SerializeField] private VectorEvent moveEvent;
-    /*[SerializeField] private GameEvent interactEvent;
-    [SerializeField] private GameEvent sprintEvent;
-
+    [SerializeField] private GameEvent pickUpEvent;
+    [SerializeField] private GameEvent dropEvent;
+/*
      [Header("GameEvents for Point n Click")]
     [SerializeField] private VectorEvent moveClickEvent;
 
@@ -67,7 +67,6 @@ public class InputReader : ScriptableObject, InputActions.IMouseMovementActions
         {
             playerInput = new InputActions();
         }
-        Debug.Log("Getting Player Input");
         /*playerInput.Player.SetCallbacks(this);
         playerInput.UI.SetCallbacks(this);
         playerInput.Dialogue.SetCallbacks(this);
@@ -94,6 +93,19 @@ public class InputReader : ScriptableObject, InputActions.IMouseMovementActions
         {
             moveEvent.testProperty = context.ReadValue<Vector2>();
             moveEvent.Raise(context.ReadValue<Vector2>());
+        }
+    }
+
+    public void OnPickUp(InputAction.CallbackContext context)
+    {
+        if(pickUpEvent != null && context.phase == InputActionPhase.Performed)
+        {
+            pickUpEvent.Raise();
+        }
+
+        if(dropEvent != null && context.phase == InputActionPhase.Canceled)
+        {
+            dropEvent.Raise();
         }
     }
 

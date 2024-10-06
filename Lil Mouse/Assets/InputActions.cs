@@ -35,6 +35,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PickUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""34fe0553-96cc-499f-8bdd-14a5e9cc1349"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +101,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89ef0551-018e-43f6-919b-75967b299b46"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +121,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // MouseMovement
         m_MouseMovement = asset.FindActionMap("MouseMovement", throwIfNotFound: true);
         m_MouseMovement_Walk = m_MouseMovement.FindAction("Walk", throwIfNotFound: true);
+        m_MouseMovement_PickUp = m_MouseMovement.FindAction("PickUp", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,11 +184,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MouseMovement;
     private List<IMouseMovementActions> m_MouseMovementActionsCallbackInterfaces = new List<IMouseMovementActions>();
     private readonly InputAction m_MouseMovement_Walk;
+    private readonly InputAction m_MouseMovement_PickUp;
     public struct MouseMovementActions
     {
         private @InputActions m_Wrapper;
         public MouseMovementActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Walk => m_Wrapper.m_MouseMovement_Walk;
+        public InputAction @PickUp => m_Wrapper.m_MouseMovement_PickUp;
         public InputActionMap Get() { return m_Wrapper.m_MouseMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -180,6 +203,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Walk.started += instance.OnWalk;
             @Walk.performed += instance.OnWalk;
             @Walk.canceled += instance.OnWalk;
+            @PickUp.started += instance.OnPickUp;
+            @PickUp.performed += instance.OnPickUp;
+            @PickUp.canceled += instance.OnPickUp;
         }
 
         private void UnregisterCallbacks(IMouseMovementActions instance)
@@ -187,6 +213,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Walk.started -= instance.OnWalk;
             @Walk.performed -= instance.OnWalk;
             @Walk.canceled -= instance.OnWalk;
+            @PickUp.started -= instance.OnPickUp;
+            @PickUp.performed -= instance.OnPickUp;
+            @PickUp.canceled -= instance.OnPickUp;
         }
 
         public void RemoveCallbacks(IMouseMovementActions instance)
@@ -207,5 +236,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public interface IMouseMovementActions
     {
         void OnWalk(InputAction.CallbackContext context);
+        void OnPickUp(InputAction.CallbackContext context);
     }
 }

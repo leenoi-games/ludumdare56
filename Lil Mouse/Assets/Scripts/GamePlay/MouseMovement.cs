@@ -5,52 +5,39 @@ using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum MouseState
-{
-    Moving,
-    Idle
-}
-
-
 
 public class MouseMovement : MonoBehaviour
 {
     [Header("Chracteristics")]
-    [SerializeField] private float speed = 2.5f;
-    [SerializeField] private float rotationSpeed = 2.5f;
-    private Vector3 moveAxis;
-    private MouseState mouseState;
+    [SerializeField] private float m_rotationSpeed = 20f;
+    private Vector3 m_moveAxis;
+    private MouseManager m_mouseManager;
+
+    Rigidbody2D m_rb;
     
     private void Start() 
     {
-        moveAxis = new Vector3(0,0,0);
-        mouseState = MouseState.Idle;
+        m_moveAxis = new Vector3(0,0,0);
+        m_rb = GetComponent<Rigidbody2D>();
+        m_mouseManager = GetComponent<MouseManager>();
     }
 
     public void Move()
     {
-        //characterController.Move(moveAxis * speed);
-        transform.Translate(moveAxis * speed, Space.World);
-        Quaternion lookRotation = Quaternion.LookRotation(Vector3.forward, moveAxis);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, rotationSpeed);
+        m_moveAxis.Normalize();
+        float speed = m_mouseManager.GetMouseState().speed;
+        m_rb.velocity = new Vector2(m_moveAxis.x * speed, m_moveAxis.y * speed);
+        Quaternion lookRotation = Quaternion.LookRotation(Vector3.forward, m_moveAxis);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, m_rotationSpeed);
     }
 
     private void FixedUpdate()
     {
-        if(mouseState == MouseState.Moving)
         Move();
     }
 
     public void MoveOnEvent(Vector3 movePos)
     {
-        if(movePos == Vector3.zero)
-        {
-            mouseState = MouseState.Idle;
-            return;
-        }
-
-        mouseState = MouseState.Moving;
-        movePos.Normalize();
-        moveAxis = movePos;
+        m_moveAxis = movePos;
     }
 }
